@@ -4,18 +4,13 @@ import java.util.Objects;
 public class LogicalEngine extends CONSTANTS{
 
     private String[][] Stage;
+    private String[] acceptedSymbols = SYMBOL_DECK;
+    private String nullSymbol = NULL_SYMBOL;
 
-    public String[] miniWise;
-    public String[][] RowWise, ColumnWise, BoxWise;
-
-    public LogicalEngine(String[][] stage) {
-        this.Stage = stage;
-
-        miniWise = new String[STAGE_SIZE];
-        RowWise = new String[STAGE_SIZE][STAGE_SIZE];
-        ColumnWise = new String[STAGE_SIZE][STAGE_SIZE];
-        BoxWise = new String[STAGE_SIZE/SEGMENT_SIZE][STAGE_SIZE];
-    }
+    private String[] miniWise = new String[STAGE_SIZE];
+    private static String[][] RowWise = new String[STAGE_SIZE][STAGE_SIZE],
+            ColumnWise = new String[STAGE_SIZE][STAGE_SIZE],
+            BoxWise = new String[STAGE_SIZE][STAGE_SIZE];
 
     public void generateGroupings(String[][] board) {
 
@@ -62,6 +57,7 @@ public class LogicalEngine extends CONSTANTS{
             BoxWise[boxStart] = miniWise;
 
         }
+
     }
 
     public static boolean hasEmptySpace(String[] bundle) {
@@ -86,6 +82,35 @@ public class LogicalEngine extends CONSTANTS{
 
     public static boolean isComplete(String[] bundle) {
         return !hasEmptySpace(bundle) && !hasDuplicates(bundle);
+    }
+
+    public static boolean isGameComplete() {
+
+        for (int i = 0; i < STAGE_SIZE; i++) {
+            if( (!isComplete(RowWise[i]))
+                    || (!isComplete(ColumnWise[i]))
+                    || (!isComplete(BoxWise[i])) ) {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
+    public static boolean validateChoice(String choice) {
+
+        for(int i = 0; i < STAGE_SIZE; i++) {
+            for(int j = 0; j < STAGE_SIZE; j++) {
+                if( ((RowWise[i][j]).equals(choice))
+                        || ((ColumnWise[i][j]).equals(choice))
+                        || ((BoxWise[i][j]).equals(choice)) ) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
 }

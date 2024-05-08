@@ -1,26 +1,30 @@
-public class GraphicalEngine extends CONSTANTS{
+public class GraphicalEngine extends CONSTANTS {
 
-    private String[][] Board;
-    private String[] SelectionBoard;
+    private String[][] Stage;
+    private String[] SelectionSymbols;
+    private int[] SelectionCounter;
 
-    public GraphicalEngine(String [][] Board, String[] SelectionBoard) {
-        this.Board = Board;
-        this.SelectionBoard = SelectionBoard;
+    public GraphicalEngine(String [][] Stage) {
+        this.Stage = Stage;
+        this.SelectionSymbols = SYMBOL_DECK;
+        this.SelectionCounter = SELECTION_COUNTER;
+
+        resetStage();
     }
 
-    public void renderStage(String[][] stage) {
-        System.out.print(fullFloor());
+    public void renderStage() {
+        System.out.print(FLOOR);
         System.out.print("\n");
         for (int i = 0; i < STAGE_SIZE; i++) {
             System.out.print(WALL);
             for (int j = 0; j < STAGE_SIZE; j++) {
-                System.out.print(stage[i][j]);
+                System.out.print(Stage[i][j]);
                 if (j % SEGMENT_SIZE == 2) {
                     System.out.print(WALL);
                 }
             }
             if (i % SEGMENT_SIZE == 2) {
-                System.out.print(fullFloor());
+                System.out.print(FLOOR);
             }
             System.out.print("\n");
         }
@@ -29,16 +33,9 @@ public class GraphicalEngine extends CONSTANTS{
     public void resetStage() {
         for (int i = 0; i < STAGE_SIZE; i++) {
             for (int j = 0; j < STAGE_SIZE; j++) {
-                Board[i][j] = NULL_SYMBOL;
+                Stage[i][j] = NULL_SYMBOL;
             }
         }
-    }
-
-    private String fullFloor() {
-        return ("\n"
-                + " < "
-                + (FLOOR.repeat(Math.max(0, STAGE_SIZE + SEGMENT_SIZE - 1)))
-                + " > ");
     }
 
 
