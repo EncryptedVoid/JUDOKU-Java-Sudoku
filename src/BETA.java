@@ -232,25 +232,76 @@ public class BETA extends Customizer {
     public static void updateSubspaces(String[][] gameState) {
         // Update rows array
         for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
+            // Copy the elements of the current row in the gameState to the corresponding row in the rows array
             System.arraycopy(gameState[rowIndex], 0, rows[rowIndex], 0, BOARD_SIZE);
         }
 
         // Update columns array
         for (int colIndex = 0; colIndex < BOARD_SIZE; colIndex++) {
+            // For each column index, iterate through each row index
             for (int rowIndex = 0; rowIndex < BOARD_SIZE; rowIndex++) {
+                // Copy the element from the gameState at [rowIndex][colIndex] to the corresponding position in the columns array
                 columns[colIndex][rowIndex] = gameState[rowIndex][colIndex];
             }
         }
 
         // Update boxes array
         for (int boxStart = 0; boxStart < BOX_SIZE; boxStart++) {
+            // Iterate over each row within the box
             for (int rowIndex = boxStart * BOX_SIZE; rowIndex < (boxStart + 1) * BOX_SIZE; rowIndex++) {
+                // Iterate over each column within the box
                 for (int colIndex = boxStart * BOX_SIZE; colIndex < (boxStart + 1) * BOX_SIZE; colIndex++) {
+                    // Calculate the box index and the position within the box to place the element
                     boxes[boxStart * BOX_SIZE + (rowIndex % BOX_SIZE)][(colIndex % BOX_SIZE)] = gameState[rowIndex][colIndex];
+
+                    /*
+                    The expression boxStart * BOX_SIZE + (rowIndex % BOX_SIZE)][(colIndex % BOX_SIZE) is used to calculate the correct index within the boxes array for placing elements from the gameState. Let's break it down:
+
+                    Context:
+                        In a Sudoku board, each 3x3 subgrid (or "box") is treated as a separate subspace. The goal here is to correctly map elements from the gameState array (which represents the entire 9x9 board) to the appropriate 3x3 subgrids in the boxes array.
+
+                    Breakdown of the Expression:
+                        boxStart * BOX_SIZE:
+
+                        boxStart iterates from 0 to BOX_SIZE - 1 (i.e., 0 to 2 for a standard 9x9 Sudoku).
+                        Multiplying by BOX_SIZE (which is 3) gives the starting row or column index for each 3x3 subgrid.
+                        For boxStart = 0, this calculates the starting index of the first subgrid.
+                        For boxStart = 1, this calculates the starting index of the second subgrid, and so on.
+                        rowIndex % BOX_SIZE:
+
+                        rowIndex iterates over rows in the current 3x3 subgrid range.
+                        Taking the modulus with BOX_SIZE (3) gives the position within the subgrid.
+                        For example, if rowIndex is 3, rowIndex % BOX_SIZE gives 0, placing it in the first row of the subgrid.
+                        colIndex % BOX_SIZE:
+
+                        Similarly, colIndex iterates over columns in the current 3x3 subgrid range.
+                        Taking the modulus with BOX_SIZE gives the position within the subgrid.
+                        For example, if colIndex is 4, colIndex % BOX_SIZE gives 1, placing it in the second column of the subgrid.
+                        Combining the Expressions:
+                        The complete expression boxStart * BOX_SIZE + (rowIndex % BOX_SIZE)][(colIndex % BOX_SIZE) correctly indexes into the boxes array:
+
+                        Row index within boxes: boxStart * BOX_SIZE + (rowIndex % BOX_SIZE):
+
+                        The first part, boxStart * BOX_SIZE, moves the starting index to the correct subgrid.
+                        The second part, (rowIndex % BOX_SIZE), positions within that subgrid.
+                        Column index within boxes: (colIndex % BOX_SIZE):
+
+                    This positions the element correctly within the column of the subgrid.
+                    Example:
+                        For a 9x9 board with BOX_SIZE of 3:
+
+                        If boxStart is 1, rowIndex is 4, and colIndex is 5:
+                        boxStart * BOX_SIZE gives 1 * 3 = 3 (start of the second row of subgrids).
+                        rowIndex % BOX_SIZE gives 4 % 3 = 1 (second row within the subgrid).
+                        colIndex % BOX_SIZE gives 5 % 3 = 2 (third column within the subgrid).
+                        The element from gameState[4][5] is placed in boxes[4][2].
+                     */
+
                 }
             }
         }
     }
+
 
     /**
      * Checks if a subset contains any empty cells.
