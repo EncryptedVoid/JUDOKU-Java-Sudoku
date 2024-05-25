@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-public class BETA extends Customizer {
+public class BETA  {
 
     // The size of the Sudoku board (9x9)
     public static final int BOARD_SIZE = 9;
@@ -399,11 +399,8 @@ public class BETA extends Customizer {
         for (int i = 0; i < BOARD_SIZE; i++) {
             System.out.print(COLUMN_SEPARATOR);
             for (int j = 0; j < BOARD_SIZE; j++) {
-                if (gameState[i][j].equals(EMPTY_CELL_SYMBOL)) {
-                    System.out.print(RED + " " + gameState[i][j] + " ");
-                } else {
-                    System.out.print(" " + gameState[i][j] + " ");
-                }
+
+                System.out.print(" " + gameState[i][j] + " ");
 
                 if (j % BOX_SIZE == 2) {
                     System.out.print(COLUMN_SEPARATOR);
